@@ -1,0 +1,201 @@
+require 'rails_helper'
+require 'faker'
+
+RSpec.feature "Customers", type: :feature do
+  scenario 'Verifica link Cadastro de Cliente' do
+    visit(root_path)
+    expect(page).to have_link('Cadastro de Clientes')
+  end
+
+  scenario 'Verifica link de Novo Cliente' do
+    visit(root_path)
+    click_on('Cadastro de Clientes')
+    expect(page).to have_content('Listando Clientes')
+    expect(page).to have_link('Novo Cliente')
+
+  end
+
+  scenario 'Verifica formulário de Novo Cliente' do
+    visit(customers_path)
+    click_on('Novo Cliente')
+    expect(page).to have_content('Novo Cliente')
+    # verifica se os campos do formulário existem
+    # expect(page).to have_field('Nome')
+  end
+   
+   # CREATE - CRIAR CLIENTE
+  scenario 'Cadastra um cliente válido' do
+    visit(new_customer_path)
+
+    customer_name = Faker::Name.name
+
+    fill_in('customer_name', with: customer_name)
+    # fill_in('Nome',	with: customer_name)
+  
+    fill_in('customer_email', with: Faker::Internet.email)
+    # fill_in('Email', with: Faker::Internet.email)
+
+    fill_in('customer_phone', with: Faker::PhoneNumber.cell_phone)
+    # fill_in('customer_phone', with: Faker::PhoneNumber.phone_number)
+    # fill_in('Telefone', with: Faker::PhoneNumber)
+
+    attach_file('Foto do Perfil', "#{Rails.root}/spec/fixtures/avatar.png")
+
+    # Fumante? label exist?
+    expect(page).to have_content('Fumante?')
+    # Choose a radio button by label
+    choose('smoker_s') # same as "Sim"
+    # choose('smoker_n') # same as "Não"
+
+    # Submit the form
+    click_on('Criar Cliente')
+
+    expect(page).to have_content('Cliente cadastrado com sucesso!')
+
+    expect(Customer.last.name).to eq(customer_name)
+  end
+
+  # SAD PATH
+  scenario 'Não cadastra um cliente inválido' do
+    visit(new_customer_path)
+    click_on('Criar Cliente')
+    expect(page).to have_content('não pode ficar em branco')
+  end
+
+
+  # SHOW - MOSTRAR CLIENTE
+  scenario 'Mostra um cliente' do
+    customer = create(:customer)
+    # customer = Customer.create!(
+    #   name: Faker::Name.name,
+    #   email: Faker::Internet.email,
+    #   phone: Faker::PhoneNumber.cell_phone,
+    #   smoker: ['S', 'N'].sample,
+    #   avatar: "#{Rails.root}/spec/fixtures/avatar.png"
+    # )
+
+    visit(customer_path(customer.id))
+    expect(page).to have_content(customer.name)
+    expect(page).to have_content(customer.email)
+    expect(page).to have_content(customer.phone)
+  end
+
+  scenario 'Testando a index' do
+    customer_1 = create(:customer)
+    # customer_1 = Customer.create!(
+    #   name: Faker::Name.name,
+    #   email: Faker::Internet.email,
+    #   phone: Faker::PhoneNumber.cell_phone,
+    #   smoker: ['S', 'N'].sample,
+    #   avatar: "#{Rails.root}/spec/fixtures/avatar.png"
+    # )
+    
+    customer_2 = create(:customer)
+    # customer_2 = Customer.create!(
+    #   name: Faker::Name.name,
+    #   email: Faker::Internet.email,
+    #   phone: Faker::PhoneNumber.cell_phone,
+    #   smoker: ['S', 'N'].sample,
+    #   avatar: "#{Rails.root}/spec/fixtures/avatar.png"
+    # )
+
+    visit(customers_path)
+    expect(page).to have_content(customer_1.name).and have_content(customer_2.name)
+  end
+
+  # UPDATE
+  scenario 'Atualiza um cliente' do
+    # Cria um cliente inicial
+    customer = create(:customer)
+    # customer = Customer.create!(
+    #   name: Faker::Name.name,
+    #   email: Faker::Internet.email,
+    #   phone: Faker::PhoneNumber.cell_phone,
+    #   smoker: 'S', # valor inicial compatível com form
+    #   gender: 'male',
+    #   avatar: Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/avatar.png", "image/png")
+    # )
+
+    # Novo valor para atualização
+    updated_name = Faker::Name.name
+
+    # Visita a página de edição
+    visit(edit_customer_path(customer.id))
+
+    # Preenche o campo Nome
+    fill_in('Nome', with: updated_name)
+
+    # # Escolhe radio button de Fumante aleatoriamente
+    # choose('smoker_s') # same as "Sim"
+    # # choose('smoker_n') # same as "Não"
+
+    # Atualiza o cliente
+    click_on 'Atualizar Cliente'
+
+    # Verifica se a atualização foi bem sucedida
+    expect(page).to have_content('Cliente atualizado com sucesso!')
+    expect(page).to have_content(updated_name)
+  end
+
+  scenario 'Clica no link Mostrar da Index' do
+    # Cria um cliente inicial
+    create(:customer)
+    # Customer.create!(
+    #   name: Faker::Name.name,
+    #   email: Faker::Internet.email,
+    #   phone: Faker::PhoneNumber.cell_phone,
+    #   smoker: 'S', # valor inicial compatível com form
+    #   gender: 'male',
+    #   avatar: Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/avatar.png", "image/png")
+    # )
+
+    visit(customers_path)
+    find(:xpath, "/html/body/table/tbody/tr[1]/td[2]/a").click
+    expect(page).to have_content("Mostrando Cliente")
+
+  end
+
+    scenario 'Clica no link Editar da Index' do
+      # Cria um cliente inicial
+      create(:customer)
+      # Customer.create!(
+      #   name: Faker::Name.name,
+      #   email: Faker::Internet.email,
+      #   phone: Faker::PhoneNumber.cell_phone,
+      #   smoker: 'S', # valor inicial compatível com form
+      #   gender: 'male',
+      #   avatar: Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/avatar.png", "image/png")
+      # )
+
+      visit(customers_path)
+      find(:xpath, "/html/body/table/tbody/tr[1]/td[3]/a").click
+      expect(page).to have_content("Editando Cliente")
+
+    end
+
+  scenario 'Apaga um cliente', js: true do
+    # Cria um cliente inicial
+    customer = create(:customer)
+    # customer = Customer.create!(
+    #   name: Faker::Name.name,
+    #   email: Faker::Internet.email,
+    #   phone: Faker::PhoneNumber.cell_phone,
+    #   smoker: 'S',
+    #   gender: 'male',
+    #   avatar: Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/avatar.png", "image/png")
+    # )
+
+    visit(customers_path)
+
+    # Usa accept_confirm para simular o clique e confirmar
+    accept_confirm do
+      click_link "delete_customer_#{customer.id}"
+    end
+
+    expect(page).to have_content('Cliente excluído com sucesso!')
+    expect(page).not_to have_content(customer.name)
+  end
+
+
+   
+end

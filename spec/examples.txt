@@ -1,0 +1,15 @@
+example_id                             | status | run_time        |
+-------------------------------------- | ------ | --------------- |
+./spec/features/customer_spec.rb[1:1]  | passed | 0.00491 seconds |
+./spec/features/customer_spec.rb[1:2]  | passed | 0.01091 seconds |
+./spec/features/customer_spec.rb[1:3]  | passed | 0.24976 seconds |
+./spec/features/customer_spec.rb[1:4]  | passed | 0.02235 seconds |
+./spec/features/customer_spec.rb[1:5]  | passed | 0.01567 seconds |
+./spec/features/customer_spec.rb[1:6]  | passed | 0.03642 seconds |
+./spec/features/customer_spec.rb[1:7]  | passed | 0.052 seconds   |
+./spec/features/customer_spec.rb[1:8]  | passed | 0.03098 seconds |
+./spec/features/customer_spec.rb[1:9]  | passed | 0.01509 seconds |
+./spec/features/customer_spec.rb[1:10] | passed | 0.01474 seconds |
+./spec/features/customer_spec.rb[1:11] | passed | 2.8 seconds     |
+./spec/features/welcome_spec.rb[1:1]   | passed | 0.00454 seconds |
+./spec/features/welcome_spec.rb[1:2]   | passed | 0.00579 seconds |
