@@ -66,3 +66,7 @@ bin/rspec
 ## Authors
 
 - [Gilberto Jr](https://www.linkedin.com/in/giljrx/)
+
+## Um Fluxo Prático de TDD
+
+- [Guia Passo a passo TDD](/fluxo_pratico_tdd.md)

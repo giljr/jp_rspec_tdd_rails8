@@ -1,0 +1,183 @@
+👉 Aqui você estava ajustando e tentando entender os erros nos testes de feature.
+  
+  68   rspec spec/features/customer_spec.rb 
+  ...
+  122  rspec spec/features/customer_spec.rb 
+  123  clear
+  
+1. Execução inicial dos testes de feature (customer_spec)
+
+Rodou várias vezes rspec spec/features/customer_spec.rb (linhas 68–123).
+
+Usou clear no meio pra limpar a tela.
+
+
+👉 Tentou levantar o servidor Rails no ambiente de teste.
+
+   90  RAILS_ENV=test bin/dev
+   ...
+
+2. Tentativa de rodar servidor em ambiente de teste
+
+RAILS_ENV=test rails s (linha 90).
+
+👉 Testando execução geral da suíte, não só de um arquivo.
+
+  93   rspec
+  96   rspec, rspec --format doc
+
+3. Uso de rspec global
+
+Rodou rspec, rspec --format doc, e outras variações (linhas 93–96).
+
+👉 Alternando entre rodar servidor de desenvolvimento e testes.
+  129  bin/dev
+  130  RAILS_ENV=test bin/dev
+  
+👉 Tentando isolar o erro de um teste exato na linha 103.
+
+  142  rspec spec/features/customer_spec.rb:103 --format documentation --fail-fast --save-page
+
+👉 Criou um novo projeto Rails focado em TDD.
+
+  150  rails new tdd_app _T
+
+Instalou Ruby 3.0.1 via rbenv, rodou bundle, rails s (linhas 151–161).
+
+  153  rbenv install 3.0.1
+
+👉 Começou a escrever testes de modelo (Product).
+
+  181  bin/rspec spec/models/product_spec.rb 
+
+👉 Migrou do teste de feature para controller/request specs.
+
+9. Criação de specs para controller e requests
+
+  211  rails g rspec:controller customers
+  213  bin/rspc spec/requests/customers_spec.rb 
+
+
+👉 Instalou e configurou Devise para autenticação de Member.
+10. Integração com Devise
+  242  bundle add devise
+  243  rails generate devise:install
+  244  clear
+  245  rails g devise member
+  246  clear
+  247  rails db:migrate
+  248  bin/dev
+
+Rodou várias vezes os specs de customers_controller (linhas 256–273).
+  260  bin/rspec spec/controllers/customers_controller_spec.rb 
+  ...
+  273  bin/rspec spec/controllers/customers_controller_spec.rb 
+
+👉 Indicando ajustes e melhorias na estrutura dos testes.
+11. Refatoração e novos testes
+  281  bin/rspec spec/controllers/customers_controller_refactored_spec.rb 
+
+Rodou rspec várias vezes (linhas 283–338).
+  290  clear
+  291  rspec
+
+👉 Evoluindo o schema do app e ajustando os testes.
+12. Migrações e ajustes no schema
+  319  rails generate migration AddGenderToCustomers gender:string
+  320  rails db:migrate
+
+👉 Versionou o projeto no GitHub.
+13. Git + GitHub
+Iniciou repositório git, configurou SSH, push para jp_rspec_tdd_rails8 (linhas 469–486).
+
+  467  rails db:test:prepare
+  468  bin/rspec
+  469  git branch -M master
+
+  471  clear
+  472  git add .
+  473  git commit -m "first commit"
+  474  git branch -M master
+  475  git remote add origin git@github.com:giljr/jp_rspec_tdd_rails8.git
+  476  git push -u origin master
+  477  ls ~/.ssh
+  478  cat ~/.ssh/id_ed25519.pub
+  479  ssh-keygen -t ed25519 -C "giljr.2009@gmail.com"
+  480  cat ~/.ssh/id_ed25519.pub
+  481  ssh-keygen -t ed25519 -C "giljr.2009@gmail.com" -f ~/.ssh/id_ed25519_personal
+  482  eval "$(ssh-agent -s)"
+  483  ssh-add ~/.ssh/id_ed25519_personal
+  484  cat ~/.ssh/id_ed25519_personal.pub
+  485  clear
+  486  git push -u origin master
+  487  clear
+  488  bin/dev
+  489  clear
+
+14. Novos modelos
+
+Criou Category e Product (linhas 490–492).
+
+Rodou migrations e specs relacionados (product_spec.rb) (linhas 494–503).
+
+  490  rails g model category description:string
+  491  clear
+  492  rails g model product description:string price:decimal category:references
+  493  clear
+  494  bin/rspec spec/models/product_spec.rb 
+  495  clear
+  496  rails db:migrate
+  497  clear
+  498  bin/rspec spec/models/product_spec.rb 
+  499  clear
+  500  rails c
+  501  clear
+  502  bin/rspec spec/models/product_spec.rb 
+  503  clear
+  504  bin/rspec
+
+15. Uso de --next-failure e tags
+
+Rodou bin/rspec --next-failure (linhas 506–540).
+
+Rodou testes com --tag devise (linhas 510–529).
+👉 Buscando isolar falhas e rodar apenas testes relacionados ao Devise.
+
+  506  bin/rspec --next-failure
+  ...
+  515  clear
+  516  bin/rspec --tag devise
+  517  clear
+  
+👉 Começando a testar o novo modelo Member.
+Rodou bin/rspec spec/models/member_spec.rb (linha 561).
+
+Voltou a rodar --next_failure em member_spec (linha 563).
+
+  561  bin/rspec spec/models/member_spec.rb 
+  562  clear
+  563  bin/rspec spec/models/member_spec.rb --next_failure
+  564  bin/rspec spec/models/member_spec.rb
+  565  clear
+  566  bin/rspec
+  567  history > history.txt
+
+✅ Resumo final:
+
+Você passou por um ciclo de:
+
+Rodar e debugar testes de Customer (features).
+
+Criar novo projeto TDD.
+
+Migrar os testes de feature para controller/request.
+
+Integrar Devise com Member.
+
+Adicionar migrations e novos modelos (Product, Category).
+
+Versionar no GitHub.
+
+Refinar execução dos testes com --next-failure e tags.
+
+Começar a validar o modelo Member com RSpec.

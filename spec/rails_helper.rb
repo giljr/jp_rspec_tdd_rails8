@@ -35,6 +35,29 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 RSpec.configure do |config|
+
+  include Warden::Test::Helpers
+  Warden.test_mode!
+
+  # Devise
+  config.include Devise::Test::ControllerHelpers, type: :controller
+  # config.include Devise::Test::ControllerHelpers, type: :view
+  # config.include Devise::Test::IntegrationHelpers, type: :feature
+  # config.include Devise::Test::IntegrationHelpers, type: :request
+  # You might also need Warden::Test::Helpers for system/feature specs
+  # config.include Warden::Test::Helpers, type: :system
+  # config.include Warden::Test::Helpers, type: :request
+
+    # https://github.com/thoughtbot/shoulda-matchers
+  Shoulda::Matchers.configure do |config|
+    config.integrate do |with|
+      with.test_framework :rspec
+
+      # Use all rails lib
+      with.library :rails
+    end
+  end
+
   # Factory Bot
   config.include FactoryBot::Syntax::Methods
   

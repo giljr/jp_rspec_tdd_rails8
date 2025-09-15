@@ -59,17 +59,26 @@ group :development, :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "webdrivers" # needed for js "Deseja Realmente eexcluir?"
-  gem 'rspec-rails'
-  gem 'faker'
-  gem 'factory_bot_rails'
+  gem "rspec-rails"
+  gem "faker"
+  gem "factory_bot_rails"
 
   # Spring speed up dev up by keeping your app running in the backgroud
-  gem 'spring'
-  gem 'spring-watcher-listen'
-  gem 'spring-commands-rspec'
+  gem "spring"
+  gem "spring-watcher-listen"
+  gem "spring-commands-rspec"
+
+  # https://github.com/thoughtbot/shoulda-matchers
+  gem "shoulda-matchers", "~> 6.0"
   
+  # to renderize template in test
+  gem "rails-controller-testing"
+
 end
 
-gem 'rails-i18n'
+# https://guides.rubyonrails.org/i18n.html
+gem "rails-i18n"
 
 
+
+gem "devise", "~> 4.9"

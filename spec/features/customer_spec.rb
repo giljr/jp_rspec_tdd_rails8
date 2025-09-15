@@ -2,6 +2,8 @@ require 'rails_helper'
 require 'faker'
 
 RSpec.feature "Customers", type: :feature do
+  include Warden::Test::Helpers
+
   scenario 'Verifica link Cadastro de Cliente' do
     visit(root_path)
     expect(page).to have_link('Cadastro de Clientes')
@@ -16,6 +18,11 @@ RSpec.feature "Customers", type: :feature do
   end
 
   scenario 'Verifica formulário de Novo Cliente' do
+    # devise
+    member = create(:member)
+
+    login_as(member, scope: :member) # Warden helper
+    
     visit(customers_path)
     click_on('Novo Cliente')
     expect(page).to have_content('Novo Cliente')
@@ -25,6 +32,11 @@ RSpec.feature "Customers", type: :feature do
    
    # CREATE - CRIAR CLIENTE
   scenario 'Cadastra um cliente válido' do
+    # devise
+    member = create(:member)
+
+    login_as(member, scope: :member) # Warden helper
+
     visit(new_customer_path)
 
     customer_name = Faker::Name.name
@@ -57,6 +69,11 @@ RSpec.feature "Customers", type: :feature do
 
   # SAD PATH
   scenario 'Não cadastra um cliente inválido' do
+    # devise
+    member = create(:member)
+
+    login_as(member, scope: :member) # Warden helper
+
     visit(new_customer_path)
     click_on('Criar Cliente')
     expect(page).to have_content('não pode ficar em branco')
@@ -65,6 +82,11 @@ RSpec.feature "Customers", type: :feature do
 
   # SHOW - MOSTRAR CLIENTE
   scenario 'Mostra um cliente' do
+    # devise
+    member = create(:member)
+
+    login_as(member, scope: :member) # Warden helper
+
     customer = create(:customer)
     # customer = Customer.create!(
     #   name: Faker::Name.name,
@@ -116,6 +138,11 @@ RSpec.feature "Customers", type: :feature do
     #   avatar: Rack::Test::UploadedFile.new("#{Rails.root}/spec/fixtures/avatar.png", "image/png")
     # )
 
+    # devise
+    member = create(:member)
+
+    login_as(member, scope: :member) # Warden helper
+
     # Novo valor para atualização
     updated_name = Faker::Name.name
 
@@ -138,6 +165,11 @@ RSpec.feature "Customers", type: :feature do
   end
 
   scenario 'Clica no link Mostrar da Index' do
+    # devise
+    member = create(:member)
+
+    login_as(member, scope: :member) # Warden helper
+
     # Cria um cliente inicial
     create(:customer)
     # Customer.create!(
@@ -156,6 +188,11 @@ RSpec.feature "Customers", type: :feature do
   end
 
     scenario 'Clica no link Editar da Index' do
+    # devise
+    member = create(:member)
+
+    login_as(member, scope: :member) # Warden helper
+
       # Cria um cliente inicial
       create(:customer)
       # Customer.create!(
@@ -174,6 +211,11 @@ RSpec.feature "Customers", type: :feature do
     end
 
   scenario 'Apaga um cliente', js: true do
+    # devise
+    member = create(:member)
+
+    login_as(member, scope: :member) # Warden helper
+
     # Cria um cliente inicial
     customer = create(:customer)
     # customer = Customer.create!(
@@ -196,6 +238,59 @@ RSpec.feature "Customers", type: :feature do
     expect(page).not_to have_content(customer.name)
   end
 
+  # devise use (, type: :controller)
+  #  include Devise::Test::ControllerHelpers
+
+
+  include Warden::Test::Helpers
+
+  # -----------------------
+  # Controller spec
+  # -----------------------
+  # RSpec.describe CustomersController, type: :controller do
+  #   include Devise::Test::ControllerHelpers
+
+  #   describe 'GET #show' do
+  #     it 'responde com 200 OK', :devise do
+  #       customer = create(:customer)
+
+  #       get :show, params: { id: customer.id }
+
+  #       expect(response).to have_http_status(200)
+  #     end
+  #   end
+  # end
+  
+  # devise use (, type: :feature, type: :feature ) 
+  # -----------------------
+  # Feature spec
+  # -----------------------
+  # RSpec.feature 'Customers', type: :feature do
+    include Warden::Test::Helpers
+
+    scenario 'responde com 200 OK e mostra nome do cliente', :devise do
+      customer = create(:customer)
+      member   = create(:member) # ou :user, dependendo do seu Devise
+
+      login_as(member, scope: :member)
+      visit customer_path(customer)
+
+      expect(page.status_code).to eq(200)
+      expect(page).to have_content(customer.name)
+    end
+  # end
+
+  #   Diferenças principais:
+
+  # Controller spec
+  # → usa get :show, params: {...}
+  # → valida response diretamente.
+  # → rápido, sem Capybara.
+
+  # Feature spec
+  # → usa visit customer_path(customer)
+  # → precisa autenticar via login_as (Warden).
+  # → valida conteúdo real da página (have_content).
 
    
 end
