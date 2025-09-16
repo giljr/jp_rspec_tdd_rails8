@@ -80,7 +80,7 @@ RSpec.feature "Customers", type: :feature do
   end
 
 
-  # SHOW - MOSTRAR CLIENTE
+  # READ - MOSTRAR CLIENTE
   scenario 'Mostra um cliente' do
     # devise
     member = create(:member)
@@ -101,7 +101,8 @@ RSpec.feature "Customers", type: :feature do
     expect(page).to have_content(customer.email)
     expect(page).to have_content(customer.phone)
   end
-
+  
+  # SHOW - Mostranda a lista de clientes
   scenario 'Testando a index' do
     customer_1 = create(:customer)
     # customer_1 = Customer.create!(
@@ -209,7 +210,8 @@ RSpec.feature "Customers", type: :feature do
       expect(page).to have_content("Editando Cliente")
 
     end
-
+  
+  # Destroy
   scenario 'Apaga um cliente', js: true do
     # devise
     member = create(:member)

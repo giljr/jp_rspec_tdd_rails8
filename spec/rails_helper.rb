@@ -34,6 +34,10 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+# i18n
+I18n.locale = :'pt-BR'
+
 RSpec.configure do |config|
 
   include Warden::Test::Helpers

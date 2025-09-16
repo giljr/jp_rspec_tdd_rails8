@@ -1,0 +1,85 @@
+<!-- factorybot_transient_examples.md -->
+<h1> FactoryBot Transient Examples</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Credit Card Example</th>
+      <th>Upcase Name Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Factory</strong>
+        <pre><code class="language-ruby">transient do
+  credit_card_number { Faker::Finance.credit_card(:visa) }
+end
+
+after(:build) do |customer, evaluator|
+  customer.credit_card_number = evaluator.credit_card_number
+end</code></pre>
+      </td>
+      <td>
+        <strong>Factory</strong>
+        <pre><code class="language-ruby">transient do
+  upcase { false }
+end
+
+after(:create) do |customer, evaluator|
+  customer.name.upcase! if evaluator.upcase
+end</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <strong>Usage</strong>
+        <pre><code class="language-ruby">customer = build(:customer, credit_card_number: "41111...")
+
+expect(customer.credit_card_number).to eq("41111...")
+expect(customer.attributes).not_to include("credit_card_number")</code></pre>
+      </td>
+      <td>
+        <strong>Usage</strong>
+        <pre><code class="language-ruby">customer = create(:customer, upcase: true)
+
+expect(customer.name).to eq(customer.name.upcase)</code></pre>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <strong>Key idea</strong>
+        <p><code>credit_card_number</code> is a <strong>transient attribute</strong> (not persisted in DB). </p> </p> It's injected only at build time and not part of the model's columns.</p>
+      </td>
+      <td>
+        <strong>Key idea</strong>
+        <p><code>upcase</code> is a <strong>factory flag</strong>. It mutates the created object (<code>name.upcase!</code>) but the flag itself is not persisted.</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <strong>When to use</strong>
+        <p>Supply extra data needed in factory setup but <strong>not stored</strong> in the model (e.g., temporary credit card numbers).</p>
+      </td>
+      <td>
+        <strong>When to use</strong>
+        <p>Toggle conditional behavior during factory creation (mutating values, enabling features, etc.).</p>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <strong>Persisted in DB?</strong>
+        <p>❌ Not persisted</p>
+      </td>
+      <td>
+        <strong>Persisted in DB?</strong>
+        <p>✅ Yes (the modified <code>name</code> is saved)</p>
+      </td>
+    </tr>
+  </tbody>
+</table>
+

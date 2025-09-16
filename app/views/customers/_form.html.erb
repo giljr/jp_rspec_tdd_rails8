@@ -1,4 +1,5 @@
 <%= form_with(model: customer, local: true) do |f| %>
+<%#= form_with url: customers_path, method: :post do |f| # URL mode: works without a model object, generating a form that still posts to customers_path%>
   <% if customer.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(customer.errors.count, "erro") %> proibiu este cliente de ser salvo:</h2>

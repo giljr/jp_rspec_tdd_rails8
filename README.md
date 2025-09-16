@@ -70,3 +70,7 @@ bin/rspec
 ## Um Fluxo Prático de TDD
 
 - [Guia Passo a passo TDD](/fluxo_pratico_tdd.md)
+- [Transient - How To Use?](/public/transient_howto.html)
+- [Controller Specs vs Feature Specs](/controller_vs_feature_specs.md)
+- [Devise VS Warden](/devise_vs_warden_test.md)
+- [Easy TDD Development Guide](/tdd_easy_flux.md)
