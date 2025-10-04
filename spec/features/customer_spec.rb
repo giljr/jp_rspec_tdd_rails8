@@ -230,7 +230,9 @@ RSpec.feature "Customers", type: :feature do
     # )
 
     visit(customers_path)
-
+    # include Gemfile (& js:true):
+    #  gem "selenium-webdriver"
+    #  gem "webdrivers" # needed for js "Deseja Realmente excluir?"
     # Usa accept_confirm para simular o clique e confirmar
     accept_confirm do
       click_link "delete_customer_#{customer.id}"
@@ -296,3 +298,4 @@ RSpec.feature "Customers", type: :feature do
 
    
 end
+
